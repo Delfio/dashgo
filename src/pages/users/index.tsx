@@ -23,15 +23,27 @@ import { RiAddLine, RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import Header from "../../components/Header";
 import Pagination from "../../components/Pagination";
 import SideBar from "../../components/SideBar";
-
+import handleFormatDate from "../../utils/formatDate";
 import { useQuery } from "react-query";
+import IUser from "../../types/IUser";
 
 export default function UserList() {
+  const formater = handleFormatDate();
+
   const { data, isLoading, error } = useQuery("@dashgo-users-list", () => {
     return fetch("http://localhost:3000/api/users")
       .then((_resp) => _resp.json())
-      .then((_data) => _data);
+      .then((_data) => {
+        const { users } = _data;
+
+        return Array.from(users).map((_user: IUser) => ({
+          ..._user,
+          created_at: formater(_user.created_at),
+        }));
+      });
   });
+
+  console.log(data);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -104,7 +116,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {usuarios.map((_el) => (
+                  {data.map((_el) => (
                     <Tr key={String(_el.id)}>
                       <Td px={["4", "4", "6"]}>
                         <Checkbox colorScheme="orange" />
@@ -117,7 +129,7 @@ export default function UserList() {
                           </Text>
                         </Box>
                       </Td>
-                      {isWideVersion && <Td>{_el.data}</Td>}
+                      {isWideVersion && <Td>{_el.created_at}</Td>}
                       <Td>
                         <Stack direction="row">
                           <IconButton
