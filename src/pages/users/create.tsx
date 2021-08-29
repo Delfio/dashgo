@@ -9,11 +9,9 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
-import {
-  RiAddBoxLine,
-  RiCloseCircleLine
-} from "react-icons/ri";
+import { RiAddBoxLine, RiCloseCircleLine } from "react-icons/ri";
 import Input from "../../components/Form/Input";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
@@ -47,12 +45,15 @@ export default function CreateUser() {
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Button
-                colorScheme="whiteAlpha"
-                rightIcon={<Icon as={RiCloseCircleLine} fontSize="20" />}
-              >
-                Cancelar
-              </Button>
+              <Link href="/users" passHref>
+                <Button
+                  as="a"
+                  colorScheme="whiteAlpha"
+                  rightIcon={<Icon as={RiCloseCircleLine} fontSize="20" />}
+                >
+                  Cancelar
+                </Button>
+              </Link>
               <Button
                 colorScheme="orange"
                 rightIcon={<Icon as={RiAddBoxLine} fontSize="20" />}

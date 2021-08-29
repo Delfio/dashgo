@@ -8,7 +8,6 @@ type INavSectionProps = {
 }
 
 export default function NavSection({children, title, selected}: INavSectionProps) {
-  console.log(selected)
     return (
         <Box>
           <Text fontWeight="bold" color={selected ? "blue.500": "gray.400"} fontSize="small">

@@ -54,12 +54,10 @@ export default function SidbarNav() {
     ],
     []
   );
-  const { push } = useRouter();
 
   const handleSelectedMenu = React.useCallback((e) => {
     setMenuSelected(e.title);
-    if(e.href !== "#") push(e.href);
-  }, [push]);
+  }, []);
 
   return (
     <Stack spacing="12" align="flex-start">
@@ -74,6 +72,7 @@ export default function SidbarNav() {
               key={String(_opt.id)}
               icon={_opt.icon}
               title={_opt.title}
+              href={_opt.href}
               onClick={() => handleSelectedMenu(_opt)}
             />
           ))}
