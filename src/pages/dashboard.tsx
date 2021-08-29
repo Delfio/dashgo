@@ -78,7 +78,7 @@ const DashBoard: React.FC = () => {
 
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" alignItems="flex-start">
           <Box
-            p="8"
+            p={["6", "8"]}
             bg="gray.800"
             radioGroup="8"
             pb="4"
@@ -89,7 +89,7 @@ const DashBoard: React.FC = () => {
             <Charts type="area" height={160} options={options} series={series} />
           </Box>
           <Box
-            p="8"
+            p={["6", "8"]}
             bg="gray.800"
             radioGroup="8"
             // pb=""
