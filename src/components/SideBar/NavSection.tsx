@@ -3,13 +3,15 @@ import React from 'react'
 
 type INavSectionProps = {
     children: React.ReactNode;
-    title: string
+    title: string;
+    selected: boolean;
 }
 
-export default function NavSection({children, title}: INavSectionProps) {
+export default function NavSection({children, title, selected}: INavSectionProps) {
+  console.log(selected)
     return (
         <Box>
-          <Text fontWeight="bold" color="gray.400" fontSize="small">
+          <Text fontWeight="bold" color={selected ? "blue.500": "gray.400"} fontSize="small">
             {title}
           </Text>
           <Stack spacing="4" mt="8" align="stretch">
