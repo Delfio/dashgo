@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   IconButton,
+  Spinner,
   Stack,
   Table,
   Tbody,
@@ -23,7 +24,15 @@ import Header from "../../components/Header";
 import Pagination from "../../components/Pagination";
 import SideBar from "../../components/SideBar";
 
+import { useQuery } from "react-query";
+
 export default function UserList() {
+  const { data, isLoading, error } = useQuery("@dashgo-users-list", () => {
+    return fetch("http://localhost:3000/api/users")
+      .then((_resp) => _resp.json())
+      .then((_data) => _data);
+  });
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -73,51 +82,63 @@ export default function UserList() {
             </Link>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" w="8">
-                  <Checkbox colorScheme="orange" />
-                </Th>
-                <Th>Usuário</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
-                <Th>Ações</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {usuarios.map((_el) => (
-                <Tr key={String(_el.id)}>
-                  <Td px={["4", "4", "6"]}>
-                    <Checkbox colorScheme="orange" />
-                  </Td>
-                  <Td>
-                    <Box>
-                      <Text fontWeight="bold">{_el.name}</Text>
-                      <Text fontSize="sm" color="gray.300">
-                        {_el.email}
-                      </Text>
-                    </Box>
-                  </Td>
-                  {isWideVersion && <Td>{_el.data}</Td>}
-                  <Td>
-                    <Stack direction="row">
-                      <IconButton
-                        aria-label="Editar usuário"
-                        colorScheme="blue"
-                        icon={<Icon as={RiPencilLine} />}
-                      />
-                      <IconButton
-                        aria-label="Inativar usuário"
-                        colorScheme="red"
-                        icon={<Icon as={RiDeleteBin2Line} />}
-                      />
-                    </Stack>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-          <Pagination />
+          {isLoading ? (
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            <Flex justify="center">
+              <Text>Falha ao obter os dados ! do usuário</Text>
+            </Flex>
+          ) : (
+            <React.Fragment>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={["4", "4", "6"]} color="gray.300" w="8">
+                      <Checkbox colorScheme="orange" />
+                    </Th>
+                    <Th>Usuário</Th>
+                    {isWideVersion && <Th>Data de cadastro</Th>}
+                    <Th>Ações</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {usuarios.map((_el) => (
+                    <Tr key={String(_el.id)}>
+                      <Td px={["4", "4", "6"]}>
+                        <Checkbox colorScheme="orange" />
+                      </Td>
+                      <Td>
+                        <Box>
+                          <Text fontWeight="bold">{_el.name}</Text>
+                          <Text fontSize="sm" color="gray.300">
+                            {_el.email}
+                          </Text>
+                        </Box>
+                      </Td>
+                      {isWideVersion && <Td>{_el.data}</Td>}
+                      <Td>
+                        <Stack direction="row">
+                          <IconButton
+                            aria-label="Editar usuário"
+                            colorScheme="blue"
+                            icon={<Icon as={RiPencilLine} />}
+                          />
+                          <IconButton
+                            aria-label="Inativar usuário"
+                            colorScheme="red"
+                            icon={<Icon as={RiDeleteBin2Line} />}
+                          />
+                        </Stack>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+              <Pagination />
+            </React.Fragment>
+          )}
         </Box>
       </Flex>
     </Box>
